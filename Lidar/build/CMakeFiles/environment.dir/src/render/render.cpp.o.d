@@ -1,7 +1,7 @@
 CMakeFiles/environment.dir/src/render/render.cpp.o: \
- /home/edvardas/Udacity/Lidar/SFND_Lidar_Obstacle_Detection/src/render/render.cpp \
+ /home/edvardas/Udacity/Lidar/src/render/render.cpp \
  /usr/include/stdc-predef.h \
- /home/edvardas/Udacity/Lidar/SFND_Lidar_Obstacle_Detection/src/render/render.h \
+ /home/edvardas/Udacity/Lidar/src/render/render.h \
  /usr/include/pcl-1.12/pcl/visualization/pcl_visualizer.h \
  /usr/include/pcl-1.12/pcl/correspondence.h \
  /usr/include/pcl-1.12/pcl/pcl_base.h /usr/include/pcl-1.12/pcl/memory.h \
@@ -1192,4 +1192,4 @@ CMakeFiles/environment.dir/src/render/render.cpp.o: \
  /usr/include/vtk-9.1/vtkPolygon.h \
  /usr/include/vtk-9.1/vtkUnstructuredGrid.h \
  /usr/include/vtk-9.1/vtkUnstructuredGridBase.h \
- /home/edvardas/Udacity/Lidar/SFND_Lidar_Obstacle_Detection/src/render/box.h
+ /home/edvardas/Udacity/Lidar/src/render/box.h

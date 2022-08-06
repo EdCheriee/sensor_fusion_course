@@ -1,7 +1,7 @@
 CMakeFiles/environment.dir/src/processPointClouds.cpp.o: \
- /home/edvardas/Udacity/Lidar/SFND_Lidar_Obstacle_Detection/src/processPointClouds.cpp \
+ /home/edvardas/Udacity/Lidar/src/processPointClouds.cpp \
  /usr/include/stdc-predef.h \
- /home/edvardas/Udacity/Lidar/SFND_Lidar_Obstacle_Detection/src/processPointClouds.h \
+ /home/edvardas/Udacity/Lidar/src/processPointClouds.h \
  /usr/include/pcl-1.12/pcl/io/pcd_io.h /usr/include/pcl-1.12/pcl/memory.h \
  /usr/include/pcl-1.12/pcl/type_traits.h \
  /usr/include/pcl-1.12/pcl/point_struct_traits.h \
@@ -1316,7 +1316,7 @@ CMakeFiles/environment.dir/src/processPointClouds.cpp.o: \
  /usr/include/pcl-1.12/pcl/common/impl/transforms.hpp \
  /usr/include/c++/11/chrono /usr/include/c++/11/ratio \
  /usr/include/c++/11/bits/parse_numbers.h \
- /home/edvardas/Udacity/Lidar/SFND_Lidar_Obstacle_Detection/src/render/box.h \
+ /home/edvardas/Udacity/Lidar/src/render/box.h \
  /usr/include/boost/filesystem.hpp \
  /usr/include/boost/filesystem/config.hpp \
  /usr/include/boost/system/api_config.hpp \
