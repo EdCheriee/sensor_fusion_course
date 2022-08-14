@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sat Aug  6 08:04:00 2022
+# Make data base, printed on Sun Aug 14 09:08:47 2022
 
 # Variables
 
@@ -81,13 +81,13 @@ MAKEFILE_LIST :=
 # automatic
 @F = $(notdir $@)
 # environment
-VSCODE_PID = 4016
+VSCODE_PID = 4013
 # environment
 XDG_SESSION_TYPE = x11
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
-SESSION_MANAGER = local/edvardas-GE72-2QC:@/tmp/.ICE-unix/1890,unix/edvardas-GE72-2QC:/tmp/.ICE-unix/1890
+SESSION_MANAGER = local/edvardas-GE72-2QC:@/tmp/.ICE-unix/1986,unix/edvardas-GE72-2QC:/tmp/.ICE-unix/1986
 # automatic
 *F = $(notdir $*)
 # environment
@@ -125,7 +125,7 @@ LANGUAGE = en_GB:en
 # automatic
 ^F = $(notdir $^)
 # environment
-INVOCATION_ID = d637ab86bef04234908ae62d1ce65bf4
+INVOCATION_ID = 445994f28d2849b48101f01c864346bf
 # environment
 USERNAME = edvardas
 # environment
@@ -151,7 +151,7 @@ GIO_LAUNCHED_DESKTOP_FILE = /usr/share/applications/code.desktop
 # makefile
 .DEFAULT_GOAL := 
 # environment
-SYSTEMD_EXEC_PID = 1963
+SYSTEMD_EXEC_PID = 2012
 # environment
 DISPLAY = :0
 # environment
@@ -161,9 +161,9 @@ GTK_MODULES = gail:atk-bridge
 # default
 MAKE_VERSION := 4.3
 # environment
-MANAGERPID = 1169
+MANAGERPID = 1195
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 4016
+GIO_LAUNCHED_DESKTOP_FILE_PID = 4013
 # environment
 _ = /usr/share/code/code
 # environment
@@ -171,7 +171,7 @@ XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GPG_AGENT_INFO = /run/user/1000/gnupg/S.gpg-agent:0:1
 # environment
-JOURNAL_STREAM = 8:30057
+JOURNAL_STREAM = 8:29977
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -265,7 +265,7 @@ GNUmakefile:
 # strcache performance: lookups = 16 / hit rate = 18%
 # hash-table stats:
 # Load=13/8192=0%, Rehash=0, Collisions=0/16=0%
-# Finished Make data base on Sat Aug  6 08:04:00 2022
+# Finished Make data base on Sun Aug 14 09:08:47 2022
 
  
 make: *** No rule to make target 'all'.  Stop.

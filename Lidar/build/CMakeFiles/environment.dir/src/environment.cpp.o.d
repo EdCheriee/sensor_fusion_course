@@ -1424,6 +1424,7 @@ CMakeFiles/environment.dir/src/environment.cpp.o: \
  /usr/include/flann/util/params.h /usr/include/flann/util/any.h \
  /usr/include/flann/general.h /usr/include/flann/defines.h \
  /usr/include/flann/config.h \
+ /usr/include/pcl-1.12/pcl/features/statistical_multiscale_interest_region_extraction.h \
  /usr/include/pcl-1.12/pcl/common/transforms.h \
  /usr/include/pcl-1.12/pcl/common/centroid.h \
  /usr/include/pcl-1.12/pcl/cloud_iterator.h \
@@ -1684,6 +1685,25 @@ CMakeFiles/environment.dir/src/environment.cpp.o: \
  /usr/include/boost/filesystem/convenience.hpp \
  /usr/include/boost/filesystem/string_file.hpp \
  /usr/include/boost/filesystem/fstream.hpp \
+ /usr/include/eigen3/Eigen/Eigenvalues /usr/include/eigen3/Eigen/Geometry \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/RealSchur.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/EigenSolver.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/RealSchur.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/SelfAdjointEigenSolver.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/Tridiagonalization.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/GeneralizedSelfAdjointEigenSolver.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/HessenbergDecomposition.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/ComplexEigenSolver.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/ComplexSchur.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/GeneralizedEigenSolver.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/RealQZ.h \
+ /usr/include/eigen3/Eigen/src/Eigenvalues/MatrixBaseEigenvalues.h \
+ /home/edvardas/Udacity/Lidar/src/quiz/cluster/kdtree.h \
+ /home/edvardas/Udacity/Lidar/src/quiz/cluster/../../render/render.h \
  /home/edvardas/Udacity/Lidar/src/processPointClouds.cpp \
  /usr/include/c++/11/unordered_set \
  /usr/include/c++/11/bits/unordered_set.h

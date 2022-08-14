@@ -1,0 +1,3 @@
+/home/edvardas/Udacity/Lidar/src/quiz/cluster/build/CMakeFiles/quizCluster.dir
+/home/edvardas/Udacity/Lidar/src/quiz/cluster/build/CMakeFiles/edit_cache.dir
+/home/edvardas/Udacity/Lidar/src/quiz/cluster/build/CMakeFiles/rebuild_cache.dir
