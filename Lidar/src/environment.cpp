@@ -46,11 +46,11 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer,
     // pcl::PointCloud<pcl::PointXYZI>::Ptr inputCloud = pointProcessorI->loadPcd("../src/sensors/data/pcd/data_1/0000000000.pcd");
 
     // Experiment with the ? values and find what works best
-    pcl::PointCloud<pcl::PointXYZI>::Ptr filterCloud = pointProcessorI->FilterCloud(inputCloud, 0.3 , Eigen::Vector4f (-10, -5, -2, 1), Eigen::Vector4f ( 30, 8, 1, 1));
+    pcl::PointCloud<pcl::PointXYZI>::Ptr filterCloud = pointProcessorI->FilterCloud(inputCloud, 0.18 , Eigen::Vector4f (-10, -6, -2, 1), Eigen::Vector4f ( 20, 6, 1, 1));
     auto segmentedCloud = pointProcessorI->RansacPlane(filterCloud, 100, 0.5);
 
     // std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI->Clustering(segmentedCloud.first, 0.8, 20, 400);
-    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI->ClusteringCustom(segmentedCloud.first, 0.8, 20, 400);
+    std::vector<pcl::PointCloud<pcl::PointXYZI>::Ptr> cloudClusters = pointProcessorI->ClusteringCustom(segmentedCloud.first, 0.8, 10, 400);
     int clusterId = 0;
     std::vector<Color> colors = {Color(1,0,0)};
 

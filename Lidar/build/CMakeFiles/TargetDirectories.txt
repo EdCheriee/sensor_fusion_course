@@ -1,3 +1,0 @@
-/home/edvardas/Udacity/Lidar/build/CMakeFiles/environment.dir
-/home/edvardas/Udacity/Lidar/build/CMakeFiles/edit_cache.dir
-/home/edvardas/Udacity/Lidar/build/CMakeFiles/rebuild_cache.dir
