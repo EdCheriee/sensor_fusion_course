@@ -21,19 +21,58 @@ void ProcessPointClouds<PointT>::numPoints(typename pcl::PointCloud<PointT>::Ptr
 
 
 template<typename PointT>
-typename pcl::PointCloud<PointT>::Ptr ProcessPointClouds<PointT>::FilterCloud(typename pcl::PointCloud<PointT>::Ptr cloud, float filterRes, Eigen::Vector4f minPoint, Eigen::Vector4f maxPoint)
+typename pcl::PointCloud<PointT>::Ptr ProcessPointClouds<PointT>::FilterCloud(typename pcl::PointCloud<PointT>::Ptr cloud, float filterRes, 
+                                                                                Eigen::Vector4f minPoint, Eigen::Vector4f maxPoint)
 {
 
     // Time segmentation process
     auto startTime = std::chrono::steady_clock::now();
 
     // TODO:: Fill in the function to do voxel grid point reduction and region based filtering
+    // https://pointclouds.org/documentation/tutorials/voxel_grid.html
+    // Create the filtering object
+    typename pcl::PointCloud<PointT>::Ptr filteredCloud(new pcl::PointCloud<PointT>);
+    pcl::VoxelGrid<PointT> voxelGrid;
+    voxelGrid.setInputCloud (cloud);
+    voxelGrid.setLeafSize (filterRes, filterRes, filterRes);
+    voxelGrid.filter (*filteredCloud);
+
+    // IMPORTANT!!! This part is/can be outdated for pcl 1.12 
+    // as cropbox seem to have fewer inherited/available methods
+
+    // pcl::StatisticalMultiscaleInterestRegionExtraction<PointT> regionOfInterest;
+    // regionOfInterest.setInputCloud(filteredCloud);
+    // regionOfInterest.
+    typename pcl::PointCloud<PointT>::Ptr regionedCloud(new pcl::PointCloud<PointT>);
+    pcl::CropBox<PointT> regionOfInterest(true);
+    regionOfInterest.setMin(minPoint);
+    regionOfInterest.setMax(maxPoint);
+    regionOfInterest.setInputCloud(filteredCloud);
+    regionOfInterest.filter(*regionedCloud);
+
+    std::vector<int> indices;
+    pcl::CropBox<PointT> roof(true);
+    roof.setMin(Eigen::Vector4f(-1.5, -1.7, -1, 1));
+    roof.setMax(Eigen::Vector4f(2.6, 1.7, -0.4, 1));
+    roof.setInputCloud(regionedCloud);
+    roof.filter(indices);    
+
+    pcl::PointIndices::Ptr inliers(new pcl::PointIndices);
+    for(auto index : indices)
+        inliers->indices.push_back(index);
+
+    pcl::ExtractIndices<PointT> extract;
+    extract.setInputCloud(regionedCloud);
+    extract.setIndices(inliers);
+    extract.setNegative(true);
+    extract.filter(*regionedCloud);
+
 
     auto endTime = std::chrono::steady_clock::now();
     auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
     std::cout << "filtering took " << elapsedTime.count() << " milliseconds" << std::endl;
 
-    return cloud;
+    return regionedCloud;
 
 }
 
@@ -135,9 +174,9 @@ std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT
 		y2 = cloud->points[*it].y;
 		z2 = cloud->points[*it].z;
 		it++;
-		x2 = cloud->points[*it].x;
-		y2 = cloud->points[*it].y;
-		z2 = cloud->points[*it].z;
+		x3 = cloud->points[*it].x;
+		y3 = cloud->points[*it].y;
+		z3 = cloud->points[*it].z;
 
 
 		// Get anchor vectors and normal vector
@@ -239,6 +278,32 @@ std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::C
     return clusters;
 }
 
+template<typename PointT>
+std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>:: ClusteringCustom(typename pcl::PointCloud<PointT>::Ptr cloud, float clusterTolerance, int minSize, int maxSize)
+{
+
+    // Time clustering process
+    auto startTime = std::chrono::steady_clock::now();
+
+    KdTree* tree = new KdTree;
+
+    for(int i = 0; i < cloud->points.size(); i++)
+    {
+        PointT point = cloud->points.at(i);
+        tree->insert({point.x, point.y, point.z}, i);
+    }
+
+
+    std::vector<typename pcl::PointCloud<PointT>::Ptr> clusters = euclideanCluster(cloud, tree, clusterTolerance, minSize, maxSize);
+
+
+
+    auto endTime = std::chrono::steady_clock::now();
+    auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
+    std::cout << "custom clustering took " << elapsedTime.count() << " milliseconds and found " << clusters.size() << " clusters" << std::endl;
+    return clusters;
+}
+
 
 template<typename PointT>
 Box ProcessPointClouds<PointT>::BoundingBox(typename pcl::PointCloud<PointT>::Ptr cluster)
@@ -259,6 +324,55 @@ Box ProcessPointClouds<PointT>::BoundingBox(typename pcl::PointCloud<PointT>::Pt
     return box;
 }
 
+template<typename PointT>
+BoxQ ProcessPointClouds<PointT>::boundingBoxWithOrientation(typename pcl::PointCloud<PointT>::Ptr cluster)
+{
+    // Code taken from http://codextechnicanum.blogspot.com/2015/04/find-minimum-oriented-bounding-box-of.html
+    // Compute principal directions
+    Eigen::Vector4f pcaCentroid;
+    pcl::compute3DCentroid(*cluster, pcaCentroid);
+    Eigen::Matrix3f covariance;
+    computeCovarianceMatrixNormalized(*cluster, pcaCentroid, covariance);
+    Eigen::SelfAdjointEigenSolver<Eigen::Matrix3f> eigen_solver(covariance, Eigen::ComputeEigenvectors);
+    Eigen::Matrix3f eigenVectorsPCA = eigen_solver.eigenvectors();
+    //  This line is necessary for proper orientation in some cases. 
+    //  The numbers come out the same without it, but
+    //  the signs are different and the box doesn't get correctly oriented in some cases.
+    eigenVectorsPCA.col(2) = eigenVectorsPCA.col(0).cross(eigenVectorsPCA.col(1)); 
+
+
+    /*// Note that getting the eigenvectors can also be obtained via the PCL PCA interface with something like:
+    pcl::PointCloud<pcl::PointXYZ>::Ptr cloudPCAprojection (new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::PCA<pcl::PointXYZ> pca;
+    pca.setInputCloud(cloudSegmented);
+    pca.project(*cloudSegmented, *cloudPCAprojection);
+    std::cerr << std::endl << "EigenVectors: " << pca.getEigenVectors() << std::endl;
+    std::cerr << std::endl << "EigenValues: " << pca.getEigenValues() << std::endl;
+    // In this case, pca.getEigenVectors() gives similar eigenVectors to eigenVectorsPCA.
+    */
+
+   // Transform the original cloud to the origin where 
+   // the principal components correspond to the axes.
+    Eigen::Matrix4f projectionTransform(Eigen::Matrix4f::Identity());
+    projectionTransform.block<3,3>(0,0) = eigenVectorsPCA.transpose();
+    projectionTransform.block<3,1>(0,3) = -1.f * (projectionTransform.block<3,3>(0,0) * pcaCentroid.head<3>());
+    typename pcl::PointCloud<PointT>::Ptr cloudPointsProjected (new pcl::PointCloud<PointT>);
+    pcl::transformPointCloud(*cluster, *cloudPointsProjected, projectionTransform);
+    // Get the minimum and maximum points of the transformed cloud.
+    pcl::PointXYZ minPoint, maxPoint;
+    pcl::getMinMax3D(*cloudPointsProjected, minPoint, maxPoint);
+    const Eigen::Vector3f meanDiagonal = 0.5f*(maxPoint.getVector3fMap() + minPoint.getVector3fMap());
+
+    // Final transform
+    BoxQ boxQ;
+    boxQ.bboxQuaternion = eigenVectorsPCA; //Quaternions are a way to do rotations https://www.youtube.com/watch?v=mHVwd8gYLnI
+    boxQ.bboxTransform = eigenVectorsPCA * meanDiagonal + pcaCentroid.head<3>();
+    boxQ.cube_height = maxPoint.x - minPoint.x;
+    boxQ.cube_length = maxPoint.y - minPoint.y;
+    boxQ.cube_width = maxPoint.z - minPoint.z;
+
+    return boxQ;
+ }
 
 template<typename PointT>
 void ProcessPointClouds<PointT>::savePcd(typename pcl::PointCloud<PointT>::Ptr cloud, std::string file)
@@ -294,5 +408,56 @@ std::vector<boost::filesystem::path> ProcessPointClouds<PointT>::streamPcd(std::
     sort(paths.begin(), paths.end());
 
     return paths;
+
+}
+
+template<typename PointT>
+void ProcessPointClouds<PointT>::checkProximity(KdTree* tree, typename pcl::PointCloud<PointT>::Ptr cluster, 
+					const typename pcl::PointCloud<PointT>::Ptr& cloud, std::vector<uint8_t>& processedPoints,
+					int index, float distanceTol)
+{
+    processedPoints[index] = 1;
+    cluster->push_back(cloud->points[index]);
+    PointT point = cloud->points[index];
+    std::vector<int> nearby_points = tree->search({point.x, point.y, point.z}, distanceTol);
+    for(auto& nearby_point : nearby_points)
+    {
+        if(!processedPoints[nearby_point])
+        {
+            checkProximity(tree, cluster, cloud, processedPoints, nearby_point, distanceTol);
+        }
+    }
+}
+
+template<typename PointT>
+std::vector<typename pcl::PointCloud<PointT>::Ptr> ProcessPointClouds<PointT>::euclideanCluster(const typename pcl::PointCloud<PointT>::Ptr& points,
+													KdTree* tree, float distanceTol, int minSize, int maxSize)
+{
+
+    // TODO: Fill out this function to return list of indices for each cluster
+
+    std::vector<typename pcl::PointCloud<PointT>::Ptr> clusters;
+    std::vector<uint8_t> processed(points->points.size(), 0);
+
+
+    for(int i = 0; i < points->points.size(); i++)
+    {
+        if(processed[i])
+            continue;
+
+        typename pcl::PointCloud<PointT>::Ptr cluster(new pcl::PointCloud<PointT>);;
+        checkProximity(tree, cluster, points, processed, i, distanceTol);
+
+        // Add only big enough clusters
+        if((cluster->size() >= minSize) && (cluster->size() <= maxSize))
+        {
+            cluster->width = cluster->size();
+            cluster->height = 1;
+            cluster->is_dense = true;
+            clusters.push_back(cluster);
+        }
+    }
+
+    return clusters;
 
 }

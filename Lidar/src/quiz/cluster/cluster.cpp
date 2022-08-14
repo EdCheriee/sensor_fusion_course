@@ -75,16 +75,8 @@ void render2DTree(Node* node, pcl::visualization::PCLVisualizer::Ptr& viewer, Bo
 
 }
 
-std::vector<std::vector<int>> euclideanCluster(const std::vector<std::vector<float>>& points, KdTree* tree, float distanceTol)
-{
 
-	// TODO: Fill out this function to return list of indices for each cluster
 
-	std::vector<std::vector<int>> clusters;
- 
-	return clusters;
-
-}
 
 int main ()
 {
@@ -121,7 +113,7 @@ int main ()
   	// Time segmentation process
   	auto startTime = std::chrono::steady_clock::now();
   	//
-  	std::vector<std::vector<int>> clusters = euclideanCluster(points, tree, 3.0);
+  	std::vector<std::vector<int>> clusters = tree->euclideanCluster(points, tree, 3.0);
   	//
   	auto endTime = std::chrono::steady_clock::now();
   	auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(endTime - startTime);
@@ -143,7 +135,7 @@ int main ()
 	
   	while (!viewer->wasStopped ())
   	{
-  	  viewer->spinOnce ();
+  	  viewer->spin ();
   	}
   	
 }
