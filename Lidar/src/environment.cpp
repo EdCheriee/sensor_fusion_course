@@ -182,7 +182,7 @@ int main (int argc, char** argv)
             streamIterator = stream.begin();
 
 
-        viewer->spin();
+        viewer->spinOnce();
         // viewerCustom->spin();
     } 
 }
