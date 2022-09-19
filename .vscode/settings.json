@@ -64,6 +64,7 @@
         "utility": "cpp",
         "variant": "cpp",
         "unordered_set": "cpp",
-        "codecvt": "cpp"
+        "codecvt": "cpp",
+        "filesystem": "cpp"
     }
 }

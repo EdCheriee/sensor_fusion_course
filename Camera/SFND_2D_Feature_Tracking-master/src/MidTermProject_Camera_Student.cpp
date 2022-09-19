@@ -354,6 +354,7 @@ int main(int argc, const char *argv[])
                             }
 
                         }
+                        dataBuffer.reset();
                         // Total performance
                         perStorage.totalPerformance = perStorage.descriptorPerformance
                                                     + perStorage.detectorPerformance
