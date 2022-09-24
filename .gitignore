@@ -34,4 +34,7 @@
 
 # Build folders
 **/build
+*.bmp
+!**/Results/SHITOMASI_BRIEF_MAT_FLANN_DES_BINARY_SEL_KNN/**
+!**/Results_report_plots/*.png
 pcl
