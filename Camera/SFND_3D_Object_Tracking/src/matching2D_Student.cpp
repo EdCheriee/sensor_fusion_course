@@ -166,7 +166,7 @@ double descKeypoints(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat
         double edgeThreshold = 10;
         double sigma = 1.6;
 
-        extractor = cv::SIFT::create(
+        extractor = cv::xfeatures2d::SIFT::create(
             nfeatures,
             nOctaveLayers,
             contrastThreshold,
@@ -402,7 +402,7 @@ void detKeypointsAKAZE(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool 
 
 void detKeypointsSIFT(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis)
 {
-    cv::Ptr<cv::SIFT> orbDetector = cv::SIFT::create();
+    cv::Ptr<cv::xfeatures2d::SIFT> orbDetector = cv::xfeatures2d::SIFT::create();
     orbDetector->detect(img, keypoints);
     // visualize results
     if (bVis)

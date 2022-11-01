@@ -2,6 +2,18 @@
 
 This is the conclusion results based on the exercises in the final project.
 
+### 3D Object matching
+Using YOLO to identify objects in the frame was quite straightforward. Afterwards, we loop through keypoint matches per bounding box in current and previous frame and take the ones that have the highest amount of matches per bounding box.
+
+### Lidar TTC
+The TTC for the lidar is calculated using constant velocity model by taking the difference in distance, between previous and current frames, of the closest point to the lidar, in this case point in X axis as it corresponds to Lidar orientation. To remove outliers, I have used MADS approach to calculated a z-score for each point and not to include for the calculation if their score exceeds 3 times the median z-score.
+
+### Keyppoint Correspondences with Bounding Box association
+Similarly to second exercise, I cycle through keypoint matches between previous and current frames and calculate Euclidean distance between them and store in a vector. This I then pass to already used MADS calculation to get the z-score. Last step is to iterate over the keypoint matches again to remove the ones that are outliers (not to included them in the bounding box) if their distance between previous and current frame keypoints is above 3 times z-score.
+
+### Camera based TTC
+The camera based TTC calculation is based on the one used in the exercises previously during the course but has an addition of taking into account the outliers, again discarding the ones that are above 3 times MADS z-score and a new median distRatio is used for the TTC.
+
 ### Investigate Lidar based TTC
 
 The lidar results are unrelated to what camera algorithms are used for detecting keypoints in the image,
@@ -74,4 +86,6 @@ The TTC for the camera is calculated using bounding box size change ratio rather
 <br/><br/>
 <em><strong>NOTE: All values that were reported as 'nan' by TTC were put as -1 in the graphs.</em></strong>
 <br/><br/>
-From the graphs above it can be seen that HARRIS and FAST detectors performed the worst as they had the biggest jumps in TTC as well as most 'nan' values when calculating the TTC. This is a result of failing to find matching keypoint pairs in the bounding box that are not the outliers. Similarly could be the case in high TTC calculation because the selected keypoint pair for TTC calculation was not from the ego car but from other part of the environment that managed to get included in the bounding box. This is particularly the case in ORB and SIFT detectors as in some cases the TTC goes beyond 80s!. Additionally, compared to Lidar TTC, the jumps are far more significant and show the unreliability of using this approach for the constant velocity model. Nevertheless, the most consistent pair of detector+descriptor is SHITOMASI detector with SIFT descriptor. 
+From the graphs above it can be seen that HARRIS, ORB and FAST detectors performed the worst as they had the biggest jumps in TTC as well as most 'nan' values when calculating the TTC. This is a result of failing to find matching keypoint pairs in the bounding box that are not the outliers, because the bounding box itself is not limited on the vehicle shape. Similarly could be the case in high TTC calculation because the selected keypoint pair for TTC calculation was not from the ego car but from other part of the environment that managed to get included in the bounding box. This is particularly the case in ORB and SIFT detectors as in some cases the TTC goes beyond 80s!. AKAZE detector showed more or less consistent output, however, compared to Lidar TTC, the TTC values are almost double per each image pair.
+<br/><br/>
+Compared to Lidar TTC, the jumps are far more significant and show the unreliability of using this approach for the constant velocity model. Nevertheless, the most consistent pair of detector+descriptor is SHITOMASI detector with SIFT descriptor. 

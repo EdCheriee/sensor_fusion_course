@@ -255,7 +255,6 @@ double computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::Key
     }
 
     // compute distance ratios between all matched keypoints
-    std::vector<std::pair<double,double>> distRatiosAndDiffs;
     std::vector<double> distRatios; // stores the distance ratios for all keypoints between curr. and prev. frame
 
     for (auto it1 = kptMatches.begin(); it1 != kptMatches.end() - 1; ++it1)
@@ -283,7 +282,6 @@ double computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::Key
 
                 double distRatio = distCurr / distPrev;
                 distRatios.push_back(distRatio);
-                distRatiosAndDiffs.push_back(std::make_pair(distRatio, distPrev - distCurr));
             }
         } // eof inner loop over all matched kpts
     }     // eof outer loop over all matched kpts
@@ -297,11 +295,28 @@ double computeTTCCamera(std::vector<cv::KeyPoint> &kptsPrev, std::vector<cv::Key
 
     std::vector<int> medianindeces;
     double medianDistRatio = computeMedian(distRatios);
+    double madsscore = calculateMADS(distRatios, medianDistRatio);
+
+    std::vector<double> filteredDistRatios;
+
+    for(auto distRatio : distRatios)
+    {
+        if(isItNotAnOutlier(distRatio, medianDistRatio, madsscore))
+            filteredDistRatios.push_back(distRatio);
+    }
+
+    if(filteredDistRatios.size() == 0)
+    {
+        TTC = NAN;
+        return NAN;
+    }
+
+    double filteredMedianDistRatio = computeMedian(filteredDistRatios);
 
     double dT = 1 / frameRate;
-    TTC = -dT / (1 - medianDistRatio);
+    TTC = -dT / (1 - filteredMedianDistRatio);
 
-    return medianDistRatio;
+    return filteredMedianDistRatio;
 }
 
 

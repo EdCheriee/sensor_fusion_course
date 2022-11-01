@@ -54,5 +54,6 @@ std::vector<std::string> descriptorTypes = {
 std::vector<std::string> selectorTypes = {
     "SEL_NN", "SEL_KNN"};
 ```
-
+### Conclusion of the Final project
+The results and description of each step for the final project can be found in Results.md file.
  

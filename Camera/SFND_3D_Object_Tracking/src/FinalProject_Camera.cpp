@@ -174,13 +174,13 @@ int main(int argc, const char *argv[])
         "BRISK", "BRIEF", "ORB", "FREAK", "AKAZE", "SIFT"};
 
     std::vector<std::string> matcherTypes = {
-        "MAT_BF", "MAT_FLANN"};
+        "MAT_FLANN"};
 
     std::vector<std::string> descriptorTypes = {
         "DES_BINARY", "DES_HOG"};
 
     std::vector<std::string> selectorTypes = {
-        "SEL_NN", "SEL_KNN"};
+        "SEL_KNN"};
 
     // Generate Header
     output_data << "Detector Type"
