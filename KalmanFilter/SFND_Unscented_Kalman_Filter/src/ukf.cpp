@@ -166,9 +166,6 @@ void UKF::Prediction(double delta_t)
   PredictSigmaPoints(Xsig_aug, delta_t);
 
   // Predict new state mean and covariance matrix
-    //
-
-
   x_.fill(0.0);
   for (int i = 0; i < Xsig_pred_.cols(); i++) 
   {
@@ -218,7 +215,6 @@ void UKF::GenerateAugmentedSigmaPoints(MatrixXd* Xsig_out)
   MatrixXd A_aug = P_aug.llt().matrixL();
   auto sqrtMatrix = sqrt((lambda_ + n_aug_)) * A_aug;
 
-  // create augmented sigma points
   // create augmented sigma points
   Xsig_aug.col(0) = x_aug;
   auto positiveSigmaPoints = sqrtMatrix.colwise() + x_aug;
