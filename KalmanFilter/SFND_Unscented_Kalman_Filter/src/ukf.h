@@ -36,7 +36,7 @@ class UKF {
    * Generate augmented sigma points
    * @param Xsig_out reference to a matrix with sigma points
    */ 
-  void GenerateAugmentedSigmaPoints(MatrixXd& Xsig_out);
+  void GenerateAugmentedSigmaPoints(MatrixXd* Xsig_out);
 
   /**
    * Predict sigma points
