@@ -33,7 +33,11 @@
 *.app
 
 # Build folders
+*.cpp.o
+*.cpp.o.d
+**/CMakeFiles
 **/build
+KalmanFilter/SFND_Unscented_Kalman_Filter/build
 *.bmp
 !**/Results/SHITOMASI_BRIEF_MAT_FLANN_DES_BINARY_SEL_KNN/**
 !**/Results_report_plots/*.png

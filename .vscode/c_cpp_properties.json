@@ -4,7 +4,9 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/eigen3"
+                "${workspaceFolder}/KalmanFilter/SFND_Unscented_Kalman_Filter/src/**",
+                "/usr/local/include/pcl-1.12",
+                "/usr/local/include/vtk-9.2"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/g++",
